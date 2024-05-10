@@ -1,0 +1,90 @@
+/*######################################################왼쪽 바퀴*/
+#define IN1 11 
+#define IN2 10  
+#define ENR 6
+/*######################################################오른쪽 바퀴*/
+#define IN3 9
+#define IN4 8
+#define ENL 7 
+/*######################################################*/
+
+void setup()
+{
+    pinMode(IN1, OUTPUT);
+    pinMode(IN2, OUTPUT);
+    pinMode(IN3, OUTPUT);
+    pinMode(IN4, OUTPUT);
+    pinMode(ENL, OUTPUT);
+    pinMode(ENR, OUTPUT);
+
+    Serial.begin(9600);
+}
+
+void motor_l(int speed)
+{
+    if (speed >= 0)
+    {
+        digitalWrite(IN1, HIGH);
+        digitalWrite(IN2,LOW);
+        analogWrite(ENL,speed ); // 0-255
+    }
+    else
+    {
+        digitalWrite(IN1, LOW);
+        digitalWrite(IN2, HIGH);
+        analogWrite(ENL,-speed);
+    }
+}
+
+void motor_r(int speed)
+{
+    if (speed >= 0)
+    {
+        digitalWrite(IN3, HIGH);
+        digitalWrite(IN4, LOW);
+        analogWrite(ENR, speed); // 0-255
+    }
+    else
+    {
+        digitalWrite(IN3, LOW);
+        digitalWrite(IN4, HIGH);
+        analogWrite(ENR, -speed);
+    }
+}
+
+void robot_control(int left_motor_speed, int right_motor_speed)
+{
+    motor_l(left_motor_speed);
+    motor_r(right_motor_speed);
+}
+
+void loop()
+{
+  // 왼쪽 회전
+  robot_control(0, 0); // 정지
+  delay(3000); // 3초 
+  
+  robot_control(100, 100); // 전진
+  delay(4000); // 1초
+
+  robot_control(-100, 100); // 오른쪽 90도 회전
+  delay(560);
+  
+  robot_control(100, 100); // 직진
+  delay(1000);
+
+  // 오른쪽 회전
+
+  robot_control(0, 0); // 정지
+  delay(3000); // 3초 
+  
+  robot_control(100, 100); // 전진
+  delay(4000); // 1초
+  
+  robot_control(100, -100); // 왼쪽 90도 회전
+  delay(560);
+
+  robot_control(100, 100); // 직진
+  delay(1000);
+
+}
